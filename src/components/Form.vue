@@ -25,47 +25,44 @@
     </div>
   </template>
   
-  <script lang="ts">
+  <script lang="ts" setup>
+  import { ref } from 'vue';
   import { agregarUsuario, verificarNombreExistente } from '@/components/forms';
- 
-  export default {
-    data() {
-      return {
-        nombre: '',
-        apellido: '',
-        edad: null,
-        genero: '',
-        telefono: null
-      };
-    },
-    methods: {
-      submitForm() {
-        if (verificarNombreExistente(this.nombre)) {
-          alert('El nombre ya existe. Ingresa otro nombre.');
-          return;
-        }
   
-        agregarUsuario({
-          nombre: this.nombre,
-          apellido: this.apellido,
-          edad: 0,
-          genero: this.genero,
-          telefono: 0
-        });
-        alert('Formulario enviado.');
-        console.log('Formulario enviado:', this.nombre);
-        this.limpiarFormulario();
-      },
-      limpiarFormulario() {
-        this.nombre = '';
-        this.apellido = '';
-        this.edad = null;
-        this.genero = '';
-        this.telefono = null;
-      },
+  const nombre = ref('');
+  const apellido = ref('');
+  const edad = ref<number | null>(null);
+  const genero = ref('');
+  const telefono = ref<number | null>(null);
+  
+  const submitForm = () => {
+    if (verificarNombreExistente(nombre.value)) {
+      alert('El nombre ya existe. Ingresa otro nombre.');
+      return;
     }
+  
+    agregarUsuario({
+      nombre: nombre.value,
+      apellido: apellido.value,
+      edad: edad.value ?? 0,
+      genero: genero.value,
+      telefono: telefono.value ?? 0
+    });
+  
+    alert('Formulario enviado.');
+    console.log('Formulario enviado:', nombre.value);
+    limpiarFormulario();
+  };
+  
+  const limpiarFormulario = () => {
+    nombre.value = '';
+    apellido.value = '';
+    edad.value = null;
+    genero.value = '';
+    telefono.value = null;
   };
   </script>
+  
   
   <style>
   * {
